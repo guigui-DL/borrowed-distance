@@ -1,0 +1,43 @@
+借来的远方 II：调研与关卡设计记录
+日期：2026-09-07
+
+1. Pillow Castle 图形程序员 Phil Fortier，Superliminal 技术拆解（2020）
+https://blog.playstation.com/2020/06/30/breaking-down-the-tech-behind-superliminals-mind-bending-illusions/
+开发者解释了保持视角大小的缩放、背景碰撞检查、物体尺寸影响光源、以及特定视角下图像变成物体。
+本作借鉴：保留物体大小与距离的比例；用尺寸同时控制通路、接口和光距；用投影比例构造三段错视圆弧。
+
+2. Sad Owl Studios 总监 Gwen Foster，Viewfinder 创造、破坏与回退（2023）
+https://blog.playstation.com/2023/06/08/create-destroy-and-rewind-in-viewfinder-out-july-18-play-the-demo-today/
+开发者讨论相片改写世界可能造成死路，以及回退如何鼓励试错。
+本作借鉴：显影可收回，物体操作可撤销，掉落可恢复，章节自由选择。
+本作的撤销是离散操作快照，不声称实现原作完整倒带。
+
+3. Isham Faizal，相机机制技术文章与公开源码（2023）
+https://ishamf.dev/p/implementing-viewfinder-mechanic/
+https://github.com/ishamf/camera-scene-capture
+https://github.com/ishamf/camera-scene-capture/blob/main/Player.gd
+已阅读相机选中对象、复制并禁用对象、重放到世界、CSG 裁切、重新生成碰撞的说明和 Player.gd 实现。
+本作选择更轻量的离线浏览器实现：保存被瞄准物体的尺寸与种类，显影独立物体；
+建筑照片使用预制可行走几何。未移植其 GDScript，也未使用其模型或 CSG 裁切实现。
+
+4. HackerPoet，NonEuclidean 公开项目
+https://github.com/HackerPoet/NonEuclidean
+公开的 C++ / OpenGL 非欧空间演示项目（MIT）。用于调研局部空间之间的连接思路。
+本作重新编写双向位置映射与离轴投影的门内动态视图，使用固定的一对门。
+未嵌入该项目源代码；不实现无限递归、多尺度世界或任意门放置。
+
+5. StrangeDS，ViewFinderRe
+https://github.com/StrangeDS/ViewFinderRe
+阅读其 UE5 项目结构和 PhotoDecal / ViewFrustum / 几何策略说明。
+用途是区分“图像显示”“实体重建”“几何覆盖”三件不同的事情。
+本作只实现明确列出的快照与结构显影范围，未移植该 UE 插件。
+
+6. 额外检索：metzlr/portals 的 Three.js 递归门项目
+https://github.com/metzlr/portals
+检索到项目简介，但源码页面未成功加载，因此不把它算作已经审阅或移植的实现。
+
+原创关卡组织原则
+每个空间机制要影响下一步选择。例如，终章中留下的小原件决定空间地址是否稳定，
+复制品才能被带过桥成为另一端的重量；光决定上层楼梯是否接通，视点决定出口是否成立。
+循环后室是原创的环境与状态设计，没有使用影视镜头、商业游戏模型或在线素材。
+所有外部资料用于机制调研。最终程序除 Three.js 引擎外，为本任务独立编写。
