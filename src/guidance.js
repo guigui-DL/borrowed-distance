@@ -59,10 +59,10 @@ function chapterGuide(){
     return step('house-enter','进入放大的房门','空手靠近房子，把准星对准房子正面的门，按 F。这里的 F 是进入；举照片时 F 才是显影。',obj('house'),'房门 · F 进入',3,5);
   }
   if(level===7){
-    if(!pads[0].on)return step('hedge-anchor','先留一个不会漂移的地址','E 拿入口的黄色方块，− 拉近缩小到 ≤ 0.70 m，放在入口的黄色圆环中心，再松手。锚点亮起后，鹿走过的路线才会被记住。',ps(0),'地址锚点',1,5);
+    if(!pads[0].on)return step('hedge-anchor','先留一个不会漂移的地址','E 拿入口的黄色方块，− 拉近缩小到 ≤ 0.70 m，放在入口的黄色圆环中心，再松手。锚点亮起后，鹿走过的路线才会被记住。',cubes[0].userData.size>.7?cubes[0].position.clone():ps(0),'方块 / 地址锚点',1,5);
     if(flags.mazeStage===2)return guideExit(5,5);
     if(placed.some(p=>p.type==='cutout')){const cut=placed.find(p=>p.type==='cutout');if(flags.mazeStage===1&&cut.pos[2]>-5)return step('hedge-recall','走出通道，再收回留白','确认整个人已离开墙面，再按 X。第一面墙复原，照片就能用于下一处白弧。',guidePoint(-4,-3,.2),'墙外安全位置',3,5);return step('hedge-cross','走过刚剪开的入口','WASD 穿过白色拱框。走到墙的另一侧后再收回；站在洞里时不能收回。',guidePoint(cut.pos[0],cut.pos[2]-3,1),'穿过入口',flags.mazeStage===0?2:4,5)}
-    const second=flags.mazeStage===1;return step(second?'hedge-second':'hedge-first',second?'把同一片留白用在下一面墙':'沿着鹿的方向剪开绿篱',second?'沿横向通道到右侧，C 举负片，对准第二面墙的白弧。预览变绿，F 剪开。':'跟着鹿去左侧通道。C 举负片，对准白弧标记，预览变绿后 F 剪开墙面。',guidePoint(second?4:-4,second?-11:1,2.3),'白弧标记',second?4:2,5);
+    const second=flags.mazeStage===1;return step(second?'hedge-second':'hedge-first',second?'把同一片留白用在下一面墙':'沿着鹿的方向剪开绿篱',second?'沿横向通道到右侧，C 举负片，对准第二面墙的白弧。预览变绿，F 剪开。':'先沿中间走到绿篱尽头，在横向通道左转。C 举负片，对准白弧标记，预览变绿后 F 剪开墙面。',guidePoint(second?4:-4,second?-11:1,2.3),'白弧标记',second?4:2,5);
   }
   if(level===8){
     if(flags.chorusOpen)return guideExit(4,4);
