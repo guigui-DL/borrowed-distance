@@ -11,7 +11,7 @@ for x in exports.split(','):
     else:parts.append(x)
 engine='const THREE = (()=>{\n'+engine[:start]+'\nreturn {'+','.join(parts)+'};\n})();'
 shell=(p/'shell.html').read_text()
-html=shell.replace('/* ENGINE */',engine).replace('/* GAME */',(p/'game.js').read_text().replace('/* EXPANSION */',(p/'expansion.js').read_text()).replace('/* GUIDANCE */',(p/'guidance.js').read_text()).replace('/* PRACTICE */',(p/'practice.js').read_text()))
+html=shell.replace('/* ENGINE */',engine).replace('/* GAME */',(p/'game.js').read_text().replace('/* EXPANSION */',(p/'expansion.js').read_text()).replace('/* GUIDANCE */',(p/'guidance.js').read_text()).replace('/* PRACTICE */',(p/'practice.js').read_text()).replace('/* ART */',(p/'art.js').read_text()).replace('/* CAMPAIGN */',(p/'campaign.js').read_text()))
 (p.parent/'dist').mkdir(exist_ok=True)
 (p.parent/'dist'/'index.html').write_text(html)
 (p.parent/'index.html').write_text(html)

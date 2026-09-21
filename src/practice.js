@@ -1,6 +1,6 @@
-/* A separate, optional hands-on lesson. The eleven story chapters keep their indices. */
+/* Chapter one: each rule is learned through a physical action. */
 const PRACTICE_LEVEL=11;
-let practice=null,practiceFinished=false,practiceDestination=6,practiceLegend='';
+let practice=null,practiceFinished=false,practiceDestination=2,practiceLegend='';
 try{practiceFinished=localStorage.getItem('borrowed-distance-practice-v1')==='done'}catch(e){}
 const practiceLessons=[
  ['先走到地上的圆圈','按 W 向前走。把自己移动到前方的浅蓝圆圈里；不用跳，也没有时间限制。','WASD 移动','这里通过移动、观察和改变物体解谜，没有战斗。',0,13,.15],
@@ -10,11 +10,11 @@ const practiceLessons=[
  ['给方块拍一张照片','空手看向刚才放好的方块，按 P。右下角会出现一张记录了尺寸的照片，原方块仍在原地。','准星对准方块 → P','P 是拍照：保存这个可操作物体此刻的大小与种类，不会把原件拿走。',3,4,1],
  ['把照片举到眼前','按 C 举起刚拍的照片。半透明形状是放置预览，现在还不是实体。','C 举起照片','举照片和拍照片是两个动作：P 保存，C 查看放在哪里。',-3,4,.2],
  ['让照片里的方块落进现实','转向左侧空地。滚轮调整预览的远近；变绿后按 F。若仍是橙色，移开自己或避开原方块。','绿色预览 → F','F 把照片里的东西放进世界，这叫“显影”。成功后，原件和副本会同时存在。',-3,4,.2],
- ['试着收回刚才的副本','现在有两个方块。按 X，刚才从照片生成的副本会消失；原件和照片都还在。','X 收回最近显影','可以放心尝试：X 收回照片产生的东西，Z 撤销物体操作，R 重置整间练习室。',null,null,null],
+ ['试着收回刚才的副本','现在有两个方块。按 X，刚才从照片生成的副本会消失；原件和照片都还在。','X 收回最近显影','可以放心尝试：X 收回照片产生的东西，Z 撤销物体操作，R 重置整间展厅。',null,null,null],
  ['领取一张道路照片','向前走近照片架，准星对准它，按 E。照片除了记录小物体，也能装下一段可行走的桥。','靠近照片架 → E','接下来把同一套 C → F 操作用在桥上，走过去验证它是真的。',0,-3,1.8],
  ['把桥的两端搭在岸上','走到断崖前的蓝色脚印处，面朝对岸。C 举桥照片，滚轮调整到绿色，F 放下；照片会变成一座桥。','C 预览 → 绿色时 F','桥的起点和终点都要落在平台上。橙色表示两端还没接好，此时不能放置。',0,-5.5,.15],
  ['亲自走过照片变成的桥','沿刚出现的桥向前走。它已经可以承受你的重量；万一掉下去，会回到安全位置。','W 向前走过桥','规则可以组合：改变尺寸、保存一个副本，再把照片变成下一段路。',0,-20,1],
- ['你已经亲手验证了两条规则','走进前方出口，开始园林第 07 章。以后遇到留白、回声和月光，还会看到对应的白话解释。','W 走进出口','推远会变大；照片能变成实体。关卡要你用这些规则找路，不需要了解任何原作。',0,-24,1.6]
+ ['你已经亲手验证了两条规则','走进前方出口，前往第二章「泳池来信」。以后遇到留白、回声和月光，还会看到对应的白话解释。','W 走进出口','推远会变大；照片能变成实体。关卡要你用这些规则找路，不需要了解任何原作。',0,-24,1.6]
 ];
 function buildPractice(){
   setupLight();scene.background.set('#356c87');floor(24,28,0,6,0,'@tile');floor(16,10,0,-23,0,'@tile');wallRoom(0,6,24,28,8,P.white);
@@ -43,7 +43,7 @@ function tickPractice(dt){
   if(s===9&&placed.some(p=>p.type==='bridge'))practiceSetStage(10);
   if(s===10&&player.pos.z<-18&&player.pos.y>EYE-.2){practiceSetStage(11);checkpoint.set(0,EYE,-20);}
   gates[0].open=practice.stage===11;
-  $('objective').textContent='练习 '+(practice.stage+1)+' / '+practiceLessons.length+' · '+practiceLessons[practice.stage][0];
+  $('objective').textContent='操作 '+(practice.stage+1)+' / '+practiceLessons.length+' · '+practiceLessons[practice.stage][0];
   renderPracticeFacts();
 }
 function practiceGuide(){
@@ -55,8 +55,8 @@ function practiceGuide(){
   if(s===6&&!photoMode)body='照片收起来了。按 C 再举起，转向左侧空地，等预览变绿后按 F。';
   if(s===10&&!placed.some(p=>p.type==='bridge'))body='桥被收回了。Tab 切到桥照片，回到岸边蓝色脚印处，再用 C → F 把桥放回来。';
   if(s===9&&cards[selected]?.type!=='bridge')body='先按 Tab 切换到右下角的“桥”照片，再去蓝色脚印处，朝对岸用 C → F 放桥。';
-  if(practice?.seconds>35)body+=' 卡住时按 H 慢慢看；也可以 Esc 暂停后跳过练习。';
-  return guideStep('practice-'+s,l[0],body,target,s<4?'练习目标':s<8?'原件 / 副本':s===8?'桥照片':s===9?'显影站位':s===10?'对岸':'练习出口',s+1,practiceLessons.length);
+  if(practice?.seconds>35)body+=' 卡住时按 H 慢慢看；也可以 Esc 暂停后直接前往第二章。';
+  return guideStep('practice-'+s,l[0],body,target,s<4?'练习目标':s<8?'原件 / 副本':s===8?'桥照片':s===9?'显影站位':s===10?'对岸':'本章出口',s+1,practiceLessons.length);
 }
 function renderPracticeFacts(){
   const isPractice=level===PRACTICE_LEVEL&&!!practice;$('practiceFacts').hidden=!isPractice||!guideEnabled;
@@ -64,12 +64,12 @@ function renderPracticeFacts(){
   const o=practiceOriginal(),s=practice.stage,l=practiceLessons[s];
   $('practiceRule').textContent=l[3];$('practiceAction').textContent=l[2];
   $('practiceMeasure').textContent=s<4?'原来 0.60 m → 现在 '+(o?.userData.size||.6).toFixed(2)+' m':s<8?'原件 '+(o?'1':'0')+' 个 · 照片副本 '+placed.filter(p=>p.type==='copy').length+' 个':placed.some(p=>p.type==='bridge')?'桥已成为实体，可以行走':'照片里的桥，尚未成为实体';
-  $('keyLegend').textContent=l[2]+'　·　H 详细说明　Esc 暂停 / 跳过　G 指引开关';
+  $('keyLegend').textContent=l[2]+'　·　H 详细说明　Esc 暂停　G 指引开关';
 }
 function resetPracticeUI(){if(level!==PRACTICE_LEVEL)practice=null;$('practiceFacts').hidden=true;$('skipPracticeBtn').hidden=level!==PRACTICE_LEVEL;if(level!==PRACTICE_LEVEL&&practiceLegend)$('keyLegend').innerHTML=practiceLegend;}
-function finishPractice(){practiceFinished=true;try{localStorage.setItem('borrowed-distance-practice-v1','done')}catch(e){}startGame(practiceDestination);showToast('练习完成。试着把“缩放 + 照片”的规则用在这间小房子上。',7)}
-function beginPractice(destination=6){practiceDestination=destination;startGame(PRACTICE_LEVEL)}
-function initPractice(){practiceLegend=$('keyLegend').innerHTML;$('practiceBtn').onclick=()=>beginPractice(6);$('skipPracticeBtn').onclick=()=>startGame(practiceDestination);$('startBtn').onclick=()=>{if(guideEnabled&&!practiceFinished)beginPractice(6);else startGame(6)};}
+function finishPractice(){complete()}
+function beginPractice(){startGame(PRACTICE_LEVEL)}
+function initPractice(){practiceLegend=$('keyLegend').innerHTML;$('skipPracticeBtn').onclick=()=>startGame(CAMPAIGN[1]);$('startBtn').onclick=()=>startGame(CAMPAIGN[0]);}
 function mechanicPrinciple(){
   if(level===PRACTICE_LEVEL)return practiceLessons[practice?.stage||0][3];
   return [
@@ -97,4 +97,4 @@ function photoFailureReason(){
   }
   return '桥 / 楼梯的两端还没同时搭住地面。先站在标记处朝出口，再用滚轮微调；Q / E 可转 90°。';
 }
-chapters.push({title:'先借一个不可能',sub:'00 / TRY THE RULES WITH YOUR OWN HANDS',goal:'一间可以随时重来的练习室。每次只试一个动作。',intro:'不用了解任何原作。先在这里亲手验证两条规则。',hints:['先移动到蓝圈，再对准黄色方块按 E。拿住后抬到平视，+ 或滚轮向上推远，实际尺寸会增加。','放大到至少 1.40 m，把方块放在右侧黄色圆环。接近圆环，低头调落点，E 松手，亮起即成功。','空手 P 拍方块，C 举照片，转向左侧空地，绿色时 F。随后按 X 收回副本，原件和照片保留。','领取桥照片后，站在断崖前蓝圈，朝对岸用 C / F。走过真的桥，再进入出口。Esc 菜单可以随时跳过练习。']});
+chapters.push({title:'先借一个不可能',sub:'00 / TRY THE RULES WITH YOUR OWN HANDS',goal:'一间可以随时重来的展厅。每次只试一个动作。',intro:'不用了解任何原作。先在这里亲手验证两条规则。',hints:['先移动到蓝圈，再对准黄色方块按 E。拿住后抬到平视，+ 或滚轮向上推远，实际尺寸会增加。','放大到至少 1.40 m，把方块放在右侧黄色圆环。接近圆环，低头调落点，E 松手，亮起即成功。','空手 P 拍方块，C 举照片，转向左侧空地，绿色时 F。随后按 X 收回副本，原件和照片保留。','领取桥照片后，站在断崖前蓝圈，朝对岸用 C / F。走过真的桥，再进入出口。Esc 菜单可以直接前往第二章。']});

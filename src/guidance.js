@@ -5,7 +5,7 @@ function guideStep(id,title,body,target=null,label='',index=1,total=1){return {i
 function guidePoint(x,z,y=.3){return new V(x,y,z)}
 function guideObject(kind){return cubes.find(c=>c.userData.kind===kind)}
 function guideCopy(kind){return cards.find(c=>c.type==='copy'&&(!kind||c.kind===kind))}
-function guideExit(index,total){const g=gates[0];return guideStep('exit','走进亮起的出口','机关已接通。用 WASD 走过青色门框，就会进入下一章。',guidePoint(g.x,g.z,g.y+1.7),'本章出口',index,total)}
+function guideExit(index,total){const g=gates[0];return guideStep('exit','走进亮起的出口',level===10?'月光与回声已接通。走过青色门框，完成六章旅程。':'机关已接通。用 WASD 走过青色门框，就会进入下一章。',guidePoint(g.x,g.z,g.y+1.7),'本章出口',index,total)}
 function chapterGuide(){
   if(level===11)return practiceGuide();
   const obj=kind=>guideObject(kind)?.position.clone(),ps=(i)=>guidePoint(pads[i].x,pads[i].z,pads[i].y+.15),ap=(i)=>guidePoint(actorPads[i].x,actorPads[i].z,actorPads[i].y+.15);
@@ -59,9 +59,10 @@ function chapterGuide(){
     return step('house-enter','进入放大的房门','空手靠近房子，把准星对准房子正面的门，按 F。这里的 F 是进入；举照片时 F 才是显影。',obj('house'),'房门 · F 进入',3,5);
   }
   if(level===7){
-    if(flags.mazeStage===2)return guideExit(4,4);
-    if(placed.some(p=>p.type==='cutout')){const cut=placed.find(p=>p.type==='cutout');if(flags.mazeStage===1&&cut.pos[2]>-5)return step('hedge-recall','走出通道，再收回留白','确认整个人已离开墙面，再按 X。第一面墙复原，照片就能用于下一处白弧。',guidePoint(-4,-3,.2),'墙外安全位置',2,4);return step('hedge-cross','走过刚剪开的入口','WASD 穿过白色拱框。走到墙的另一侧后再收回；站在洞里时不能收回。',guidePoint(cut.pos[0],cut.pos[2]-3,1),'穿过入口',flags.mazeStage===0?1:3,4)}
-    const second=flags.mazeStage===1;return step(second?'hedge-second':'hedge-first',second?'把同一片留白用在下一面墙':'沿着鹿的方向剪开绿篱',second?'沿横向通道到右侧，C 举负片，对准第二面墙的白弧。预览变绿，F 剪开。':'跟着鹿去左侧通道。C 举负片，对准白弧标记，预览变绿后 F 剪开墙面。',guidePoint(second?4:-4,second?-11:1,2.3),'白弧标记',second?3:1,4);
+    if(!pads[0].on)return step('hedge-anchor','先留一个不会漂移的地址','E 拿入口的黄色方块，− 拉近缩小到 ≤ 0.70 m，放在入口的黄色圆环中心，再松手。锚点亮起后，鹿走过的路线才会被记住。',ps(0),'地址锚点',1,5);
+    if(flags.mazeStage===2)return guideExit(5,5);
+    if(placed.some(p=>p.type==='cutout')){const cut=placed.find(p=>p.type==='cutout');if(flags.mazeStage===1&&cut.pos[2]>-5)return step('hedge-recall','走出通道，再收回留白','确认整个人已离开墙面，再按 X。第一面墙复原，照片就能用于下一处白弧。',guidePoint(-4,-3,.2),'墙外安全位置',3,5);return step('hedge-cross','走过刚剪开的入口','WASD 穿过白色拱框。走到墙的另一侧后再收回；站在洞里时不能收回。',guidePoint(cut.pos[0],cut.pos[2]-3,1),'穿过入口',flags.mazeStage===0?2:4,5)}
+    const second=flags.mazeStage===1;return step(second?'hedge-second':'hedge-first',second?'把同一片留白用在下一面墙':'沿着鹿的方向剪开绿篱',second?'沿横向通道到右侧，C 举负片，对准第二面墙的白弧。预览变绿，F 剪开。':'跟着鹿去左侧通道。C 举负片，对准白弧标记，预览变绿后 F 剪开墙面。',guidePoint(second?4:-4,second?-11:1,2.3),'白弧标记',second?4:2,5);
   }
   if(level===8){
     if(flags.chorusOpen)return guideExit(4,4);
@@ -118,7 +119,7 @@ function renderGuidance(){
 }
 function setGuidance(on,announce=false){guideEnabled=!!on;try{localStorage.setItem('borrowed-distance-guide',on?'on':'off')}catch(e){}$('guideStart').checked=guideEnabled;$('guidePause').checked=guideEnabled;$('guideBtn').textContent='指引：'+(on?'开':'关')+' G';$('guideBtn').setAttribute('aria-pressed',String(guideEnabled));renderGuidance();if(announce&&active)showToast(on?'操作指引已开启。G 可随时关闭。':'操作指引已关闭。H 仍可查看本章线索。',4)}
 function hint(){if(guideHintOpen){closeGuideHint();return}guideHintOpen=true;guideHintResume=active;active=false;clearKeys();$('hintModal').hidden=false;guideHintIndex=clamp(flags.hint||0,0,chapters[level].hints.length-1);renderGuideHint();if(document.pointerLockElement)document.exitPointerLock()}
-function renderGuideHint(){const s=chapterGuide();$('hintChapter').textContent=(level===11?'00':String(level+1).padStart(2,'0'))+' / '+chapters[level].title;$('hintNow').textContent=s.title+'：'+s.body;$('hintText').textContent=chapters[level].hints[guideHintIndex];$('hintCounter').textContent='线索 '+(guideHintIndex+1)+' / '+chapters[level].hints.length;$('hintPrevious').disabled=guideHintIndex===0;$('hintNext').disabled=guideHintIndex===chapters[level].hints.length-1;flags.hint=guideHintIndex;}
+function renderGuideHint(){const s=chapterGuide();$('hintChapter').textContent=chapterNumber(level)+' / '+chapters[level].title;$('hintNow').textContent=s.title+'：'+s.body;$('hintText').textContent=chapters[level].hints[guideHintIndex];$('hintCounter').textContent='线索 '+(guideHintIndex+1)+' / '+chapters[level].hints.length;$('hintPrevious').disabled=guideHintIndex===0;$('hintNext').disabled=guideHintIndex===chapters[level].hints.length-1;flags.hint=guideHintIndex;}
 function closeGuideHint(){guideHintOpen=false;$('hintModal').hidden=true;if(guideHintResume){guideHintResume=false;resume()}}
 function initGuidance(){
   $('guideStart').onchange=e=>setGuidance(e.target.checked);$('guidePause').onchange=e=>setGuidance(e.target.checked);$('guideBtn').onclick=()=>setGuidance(!guideEnabled,true);
