@@ -2,7 +2,7 @@
 const CAMPAIGN=Object.freeze([11,2,6,7,9,10]);
 function chapterNumber(raw){return String(CAMPAIGN.indexOf(raw)+1).padStart(2,'0')}
 const campaignMetadata=[
- {title:'借一个台阶',sub:'01 / THE BORROWED MEASURE',mechanics:'缩放 · 拍照 · 显影',goal:'从一次拿起开始，亲手把照片变成路。',intro:'第一章 · 借一个台阶。每次只试一个动作，先走到白色起步圈。'},
+ {title:'借一个台阶',sub:'01 / THE BORROWED MEASURE',mechanics:'缩放 · 拍照 · 显影',goal:'从一次拿起开始，亲手把照片变成路。',intro:'第一章 · 借一个台阶。每次只试一个动作，先走到起步圈。'},
  {title:'泳池来信',sub:'02 / A LETTER FROM THE POOL',mechanics:'楼梯 · 视点 · 双重曝光',goal:'登上水中的观察台，让分散的轮廓成为下一座桥。',intro:'第二章 · 泳池来信。上一关的桥来自照片，这一次，要先从视点里找到它。'},
  {title:'折叠的家',sub:'03 / A HOUSE LARGER WITHIN',mechanics:'放大房屋 · 把光带进去',goal:'拍下灯光，放大小屋，把一份光带进更大的庭院。',intro:'第三章 · 折叠的家。街区向天空卷起，一间小屋正等待你决定它的大小。'},
  {title:'留白花园',sub:'04 / AN ADDRESS IN THE HEDGE',mechanics:'缩小锚点 · 循环 · 负片',goal:'留下地址，跟随鹿，用同一片留白穿过两道影墙。',intro:'第四章 · 留白花园。先缩小方块稳定地址，再寻找不重复的路线。'},

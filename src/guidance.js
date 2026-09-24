@@ -5,7 +5,7 @@ function guideStep(id,title,body,target=null,label='',index=1,total=1){return {i
 function guidePoint(x,z,y=.3){return new V(x,y,z)}
 function guideObject(kind){return cubes.find(c=>c.userData.kind===kind)}
 function guideCopy(kind){return cards.find(c=>c.type==='copy'&&(!kind||c.kind===kind))}
-function guideExit(index,total){const g=gates[0];return guideStep('exit','走进亮起的出口',level===10?'月光与回声已接通。走过白色门框，完成六章旅程。':'机关已接通。用 WASD 走过白色门框，就会进入下一章。',guidePoint(g.x,g.z,g.y+1.7),'本章出口',index,total)}
+function guideExit(index,total){const g=gates[0];return guideStep('exit','走进亮起的出口',level===10?'月光与回声已接通。走过出口门框，完成六章旅程。':'机关已接通。用 WASD 走过出口门框，就会进入下一章。',guidePoint(g.x,g.z,g.y+1.7),'本章出口',index,total)}
 function chapterGuide(){
   if(level===11)return practiceGuide();
   const obj=kind=>guideObject(kind)?.position.clone(),ps=(i)=>guidePoint(pads[i].x,pads[i].z,pads[i].y+.15),ap=(i)=>guidePoint(actorPads[i].x,actorPads[i].z,actorPads[i].y+.15);

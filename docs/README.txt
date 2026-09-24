@@ -1,4 +1,4 @@
-借来的远方 · 混凝土与水
+借来的远方 · 折光之城
 
 离线：双击 Borrowed-Distance.html 或 index.html，用电脑 Chrome / Edge 打开。
 无需网络、服务器或安装。需键盘鼠标和 WebGL 图形加速；手机没有触屏操作。
